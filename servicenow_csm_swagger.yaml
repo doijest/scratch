@@ -1,0 +1,119 @@
+openapi: 3.0.1
+
+info:
+  title: ServiceNow CSM API
+  description: ServiceNow API specificially for CSM integrations
+  version: 1.0.0
+
+security:
+- basicAuth: []
+
+tags:
+- name: customer_accounts
+  description: Returns customer accounts
+
+
+paths:
+  /customer_account:
+  
+    get:
+      tags:
+      - customer_account
+      summary: Get Customer Account Data
+      operationId: get_customer_account
+      parameters:
+        - $ref: '#/components/parameters/sysparm_query'
+        - $ref: '#/components/parameters/sysparm_display_value'
+        - $ref: '#/components/parameters/sysparm_exclude_reference_link'
+        - $ref: '#/components/parameters/sysparm_fields'
+      responses:
+        '2XX':
+          $ref: '#/components/responses/2xxResponseArray'
+        '4XX':
+          $ref: '#/components/responses/4xxResponse'
+        '5XX':
+          $ref: '#/components/responses/5xxResponse'
+
+components:
+  
+  schemas:
+    customer_account:
+      type: object
+      description: Represenets customer account details
+      properties:
+        number:
+          type: string
+          description: XXXX
+        sys_id:
+          type: string
+          description: XXXX
+        name:
+          type: string
+          description: XXXX
+        sys_class_name:
+          type: string
+          description: XXXX
+      example: 
+        number: ACCT0025511
+        sys_id: 00046903db25c0907a1e986adb961903
+        name: 3 2 Reigment Royal Artillery
+        sys_class_name: customer_account
+  
+  responses:
+    
+    2xxResponseArray:
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/customer_account'
+    
+    2xxResponseObject:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/customer_account'
+    
+    4xxResponse:
+      description: Bad Request
+    
+    5xxResponse:
+      description: Internal server error
+    
+  parameters:
+  
+    sysparm_query:
+      name: sysparm_query
+      in: query
+      description: Encoded query used to filter the result set. Syntax sysparm_query=<col_name><operator><value> (https://developer.servicenow.com/dev.do#!/reference/api/rome/rest/c_TableAPI#table-GET)
+      schema:
+        type: string
+
+    sysparm_display_value:
+      name: sysparm_display_value
+      in: query
+      description: Data retrieval operation for reference and choice fields. Based on this value, retrieves the display value and/or the actual value from the database. (https://developer.servicenow.com/dev.do#!/reference/api/rome/rest/c_TableAPI#table-GET)
+      schema:
+        type: string
+
+    sysparm_exclude_reference_link:
+      name: sysparm_exclude_reference_link
+      in: query
+      description: Flag that indicates whether to exclude Table API links for reference fields. Valid values true Exclude Table API links for reference fields. false Include Table API links for reference fields. (https://developer.servicenow.com/dev.do#!/reference/api/rome/rest/c_TableAPI#table-GET)
+      schema:
+        type: string
+
+    sysparm_fields:
+      name: sysparm_fields
+      in: query
+      description: Comma-separated list of fields to return in the response. (https://developer.servicenow.com/dev.do#!/reference/api/rome/rest/c_TableAPI#table-GET)
+      schema:
+        type: string  
+  
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
